@@ -145,6 +145,22 @@ _CUSOLVER_EIG_MODE = {
     'vector': 1
 }
 
+def cusolverGetVersion():
+
+    """ get cusolver version
+
+        returns:
+        (major, minor, patch) tuple, example: 11, 3, 2
+        0, 1, 2 is actually a libraryPropertyType enum
+    """
+    major, minor, patch = ctypes.c_int(), ctypes.c_int(), ctypes.c_int()
+    _libcusolver.cusolverGetProperty(0, ctypes.byref(major))
+    _libcusolver.cusolverGetProperty(1, ctypes.byref(minor))
+    _libcusolver.cusolverGetProperty(2, ctypes.byref(patch))
+
+    print(major.value)
+    return major.value, minor.value, patch.value
+
 def cusolverCheckStatus(status):
     """
     Raise CUSOLVER exception.
@@ -216,6 +232,7 @@ def cusolverDnCreate():
 
     handle = ctypes.c_void_p()
     status = _libcusolver.cusolverDnCreate(ctypes.byref(handle))
+
     cusolverCheckStatus(status)
     return handle.value
 

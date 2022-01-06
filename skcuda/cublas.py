@@ -281,7 +281,8 @@ def _get_cublas_version():
     except:
 
         # Create a temporary context to run cublasGetVersion():
-        warnings.warn('creating CUBLAS context to get version number')
+        # fix: this regex fails for current cublas so
+        # warnings.warn('creating CUBLAS context to get version number')
         h = cublasCreate()
         version = cublasGetVersion(h)
         cublasDestroy(h)
